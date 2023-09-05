@@ -7,18 +7,62 @@ d3.json(queryUrl).then(function(data) {
   createFeatures(data.features);
 });
 
+d3.json(queryUrl).then(function(data) {
+  // Here we add a GeoJSON layer to the map once the file is loaded.
+  L.geoJson(data, {
+    // We turn each feature into a circleMarker on the map.
+    pointToLayer: function (feature, latlng) {
+      return L.circleMarker(latlng);
+    },
+    // We set the style for each circleMarker using our styleInfo function.
+    style: styleInfo,
+  });
+});
+
+function getColor(feature) {
+  for (let i = 0; i < feature.length; i++) {
+
+    // Conditionals for 
+    let color = "";
+    if (feature > 20) {
+      color = "green";
+    }
+    else if (feature > 15) {
+      color = "yellow";
+    }
+    else if (feature > 10) {
+      color = "orange";
+    }
+    else {
+      color = "red";
+    }
+  }
+} 
+
+function getRadius(feature) {  
+  
+  Math.sqrt(feature) * 500
+
+}
+
+function styleInfo(feature) {
+  return {
+    opacity: 1,
+    fillOpacity: 1,
+    fillColor: getColor(feature.geometry.coordinates[2]),
+    color: "#000000",
+    radius: getRadius(feature.properties.mag),
+    stroke: true,
+    weight: 0.5
+  };
+}
+
 function createFeatures(earthquakeData) {
 
     // Define a function that we want to run once for each feature in the features array.
     // Give each feature a popup that describes the place and time of the earthquake.
     function onEachFeature(feature, layer) {
-      layer.circle(feature.properties.place, {
-        fillOpacity: 0.75,
-        color: "white",
-        fillColor: color,
-        // Adjust the radius.
-        radius: Math.sqrt(feature.properties.mag) * 500
-      }).bindPopup(`<h3>${feature.properties.place}</h3><hr>
+      layer.bindPopup(`<h3>${feature.properties.place}</h3><hr>
       <p>Magnitude: ${feature.properties.mag}</p><hr>
       <p>Depth: ${feature.geometry.coordinates[2]} km</p>
       `);
