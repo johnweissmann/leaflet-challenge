@@ -12,9 +12,15 @@ function createFeatures(earthquakeData) {
     // Define a function that we want to run once for each feature in the features array.
     // Give each feature a popup that describes the place and time of the earthquake.
     function onEachFeature(feature, layer) {
-      layer.bindPopup(`<h3>${feature.properties.place}</h3><hr>
+      layer.circle(feature.properties.place, {
+        fillOpacity: 0.75,
+        color: "white",
+        fillColor: color,
+        // Adjust the radius.
+        radius: Math.sqrt(feature.properties.mag) * 500
+      }).bindPopup(`<h3>${feature.properties.place}</h3><hr>
       <p>Magnitude: ${feature.properties.mag}</p><hr>
-      <p>Depth: ${feature.geometry.coordinates[2]} km </p>
+      <p>Depth: ${feature.geometry.coordinates[2]} km</p>
       `);
     }
   
