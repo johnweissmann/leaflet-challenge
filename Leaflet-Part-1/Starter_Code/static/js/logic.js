@@ -3,6 +3,7 @@ let queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_da
 
 // Perform a GET request to the query URL
 d3.json(queryUrl).then(function(data) {
+  
   // Create our map.
   let myMap = L.map("map", {
     center: [
@@ -10,6 +11,7 @@ d3.json(queryUrl).then(function(data) {
     ],
     zoom: 5,
   });
+  
   // Add a tile layer.
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -30,6 +32,19 @@ d3.json(queryUrl).then(function(data) {
       `);
     }
   }).addTo(myMap);
+
+  // Set up the legend.
+  let legend = L.control({ position: "bottomright" });
+  legend.onAdd = function(myMap) {
+    let div = L.DomUtil.create("div", "legend");
+    div.innerHTML += "<h3>Legend</h3>";
+    div.innerHTML += '<i style="background: green"></i><span>Depth: Greater than 20 km</span><br>';
+
+    return div;
+  };
+  
+  // Adding the legend to the map
+  legend.addTo(myMap);
 
 });
 
