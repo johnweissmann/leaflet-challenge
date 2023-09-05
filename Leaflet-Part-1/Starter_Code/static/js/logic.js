@@ -39,7 +39,9 @@ d3.json(queryUrl).then(function(data) {
     let div = L.DomUtil.create("div", "legend");
     div.innerHTML += "<h3>Legend</h3>";
     div.innerHTML += '<i style="background: green"></i><span>Depth: Greater than 20 km</span><br>';
-
+    div.innerHTML += '<i style="background: yellow"></i><span>Depth: 15-20 km</span><br>';
+    div.innerHTML += '<i style="background: orange"></i><span>Depth: 10-15 km</span><br>';
+    div.innerHTML += '<i style="background: red"></i><span>Depth: 0-10 km</span><br>';
     return div;
   };
   
